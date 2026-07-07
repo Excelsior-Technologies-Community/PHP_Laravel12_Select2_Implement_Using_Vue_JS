@@ -12,4 +12,11 @@ class TagController extends Controller
             \App\Models\Tag::orderBy('id', 'asc')->get()
         );
     }
+
+    public function analytics()
+    {
+        $tags = \App\Models\Tag::withCount('products')->get();
+
+        return response()->json($tags);
+    }
 }

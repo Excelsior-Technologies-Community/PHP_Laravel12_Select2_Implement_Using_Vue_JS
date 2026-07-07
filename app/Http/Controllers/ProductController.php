@@ -58,6 +58,7 @@ class ProductController extends Controller
         ]);
 
         $product = Product::create([
+            'sku' => $this->generateSku(),
             'name' => $request->name,
             'price' => $request->price,
         ]);
@@ -138,5 +139,14 @@ class ProductController extends Controller
             'latest_product' => Product::latest()->first(),
 
         ]);
+    }
+
+    private function generateSku()
+    {
+        $lastProduct = \App\Models\Product::orderBy('id', 'desc')->first();
+
+        $nextId = $lastProduct ? $lastProduct->id + 1 : 1;
+
+        return 'PRD-' . str_pad($nextId, 5, '0', STR_PAD_LEFT);
     }
 }

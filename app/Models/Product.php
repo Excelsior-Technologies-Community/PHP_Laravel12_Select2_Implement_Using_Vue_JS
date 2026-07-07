@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
-    protected $fillable = ['name', 'price'];
+    protected $fillable = ['sku', 'name', 'price'];
 
     public function tags(): BelongsToMany
     {

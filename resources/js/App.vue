@@ -2,9 +2,17 @@
 
 <div class="container mx-auto p-6">
 
-    <h1 class="text-3xl font-bold text-center mb-8">
-        Product Manager Dashboard
-    </h1>
+<div class="dashboard-header">
+
+<h1>
+📦 Product Manager Dashboard
+</h1>
+
+<p>
+Manage products, tags and analytics from one place
+</p>
+
+</div>
 
     <!-- Dashboard -->
 
@@ -196,6 +204,8 @@
 
                     <th class="border p-3 text-left">Name</th>
 
+                    <th class="border p-3 text-left">SKU</th>
+
                     <th class="border p-3 text-left">Price</th>
 
                     <th class="border p-3 text-left">Tags</th>
@@ -215,6 +225,10 @@
 
                     <td class="border p-3">
                         {{ index + 1 }}
+                    </td>
+
+                    <td class="border p-3">
+                        {{ product.sku }}
                     </td>
 
                     <td class="border p-3">
@@ -350,6 +364,32 @@
 
     </div>
 
+    <!-- Tag Analytics Section -->
+<div class="bg-white rounded-lg shadow p-6 mt-6">
+
+    <h2 class="text-xl font-bold mb-4">
+        Tag Analytics
+    </h2>
+
+    <div v-if="tagAnalytics.length === 0" class="text-gray-500">
+        No analytics available
+    </div>
+
+    <ul v-else>
+        <li
+            v-for="tag in tagAnalytics"
+            :key="tag.id"
+            class="flex justify-between border-b py-2"
+        >
+            <span>{{ tag.name }}</span>
+            <span class="font-bold text-blue-600">
+                {{ tag.products_count }}
+            </span>
+        </li>
+    </ul>
+
+</div>
+
 </div>
 </template> 
 
@@ -376,6 +416,9 @@ export default {
                 lowest_price: 0,
                 total_value: 0
             },
+
+            // Tag Analytics
+            tagAnalytics: [],
 
             // Search
             search: "",
@@ -411,6 +454,8 @@ export default {
         this.loadTags();
 
         this.loadStatistics();
+
+        this.loadTagAnalytics(); // ADD THIS
 
         this.$nextTick(() => {
 
@@ -703,7 +748,17 @@ export default {
 
             }
 
+        },
+
+            // Tag Analytics
+    async loadTagAnalytics() {
+        try {
+            const response = await axios.get("/api/tags/analytics");
+            this.tagAnalytics = response.data;
+        } catch (error) {
+            console.error(error);
         }
+    }
 
     }
 

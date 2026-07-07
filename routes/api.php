@@ -24,4 +24,6 @@ Route::delete('/products/{product}', [ProductController::class, 'destroy']);
 
 // Dashboard Statistics
 
-Route::get('/statistics', [ProductController::class, 'statistics']);
+Route::get('/statistics', [ProductController::class, 'statistics']);  
+
+Route::get('/tags/analytics', [TagController::class, 'analytics']);
